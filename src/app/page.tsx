@@ -1217,10 +1217,7 @@ export default function Home() {
                     </span>
                   </div>
                   
-                  <button className="inline-flex items-center gap-2 text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 hover:scale-105 shadow-xl">
-                    <FileText className="w-5 h-5" />
-                    Ler Artigo Completo
-                  </button>
+
                 </div>
               </article>
             ))}

@@ -17,8 +17,15 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Criado com a Lasy",
-  description: "Projeto criado com Lasy AI",
+  title: "Dra. Ana Paula - Neuropediatra e Pediatra",
+  description: "Especialista em Neuropediatria e Pediatria. Cuidado especializado para o desenvolvimento neurológico infantil, diagnóstico e tratamento do TEA (Transtorno do Espectro Autista).",
+  keywords: "neuropediatra, pediatra, TEA, autismo, desenvolvimento infantil, neurologia pediátrica",
+  authors: [{ name: "Dra. Ana Paula" }],
+  openGraph: {
+    title: "Dra. Ana Paula - Neuropediatra e Pediatra",
+    description: "Especialista em Neuropediatria e Pediatria. Cuidado especializado para o desenvolvimento neurológico infantil.",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
