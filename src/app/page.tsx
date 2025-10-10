@@ -1,13 +1,14 @@
 'use client'
 
-import { useState } from 'react'
-import { Heart, Brain, Users, Award, Phone, MapPin, Clock, CheckCircle, Play, Instagram, Linkedin, Star, Shield, Stethoscope, BookOpen, User, Lock, Edit, FileText, Image, Video, Settings, Save, Plus, Trash2, Eye, EyeOff, Move, Copy } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { Heart, Brain, Users, Award, Phone, MapPin, Clock, CheckCircle, Play, Instagram, Star, Shield, Stethoscope, BookOpen, User, Lock, Edit, FileText, Image, Video, Settings, Save, Plus, Trash2, Eye, EyeOff, Move, Copy, Check } from 'lucide-react'
 
 export default function Home() {
   const [showDashboard, setShowDashboard] = useState(false)
   const [loginData, setLoginData] = useState({ username: '', password: '' })
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [activeSection, setActiveSection] = useState('hero')
+  const [saveStatus, setSaveStatus] = useState('')
   const [blogPosts, setBlogPosts] = useState([
     {
       id: 1,
@@ -45,7 +46,7 @@ export default function Home() {
     hero: {
       title: 'Cuidando do desenvolvimento neurológico infantil com ciência, empatia e propósito',
       subtitle: 'Atendimento capacitado em Neuropediatria e Pediatria com foco no diagnóstico, acompanhamento e cuidado integral de crianças e adolescentes com transtornos do neurodesenvolvimento.',
-      image: 'https://i.imgur.com/K3yeK96.jpg',
+      image: 'https://i.imgur.com/MBDOByW.jpg',
       crm: 'CRM 7688/RO'
     },
     about: {
@@ -128,11 +129,13 @@ export default function Home() {
       }
       setBlogPosts([post, ...blogPosts])
       setNewPost({ title: '', content: '', category: '', image: '' })
+      showSaveSuccess()
     }
   }
 
   const deleteBlogPost = (id: number) => {
     setBlogPosts(blogPosts.filter(post => post.id !== id))
+    showSaveSuccess()
   }
 
   const addVideo = (section: 'neuropediatria' | 'pediatria') => {
@@ -162,6 +165,7 @@ export default function Home() {
       ...prev,
       [section]: prev[section].filter(video => video.id !== id)
     }))
+    showSaveSuccess()
   }
 
   const updateSectionData = (section: string, field: string, value: string) => {
@@ -176,6 +180,15 @@ export default function Home() {
 
   const getCurrentSectionData = (section: string) => {
     return sectionData[section] || {}
+  }
+
+  const showSaveSuccess = () => {
+    setSaveStatus('success')
+    setTimeout(() => setSaveStatus(''), 3000)
+  }
+
+  const handleSaveChanges = () => {
+    showSaveSuccess()
   }
 
   if (showDashboard) {
@@ -256,6 +269,12 @@ export default function Home() {
                     <h1 className="text-2xl font-bold text-gray-800">Dashboard Visual Builder</h1>
                   </div>
                   <div className="flex items-center gap-4">
+                    {saveStatus === 'success' && (
+                      <div className="flex items-center gap-2 px-4 py-2 bg-green-100 text-green-800 rounded-lg border border-green-200 animate-pulse">
+                        <Check className="w-4 h-4" />
+                        <span className="font-semibold">Alterações salvas com sucesso!</span>
+                      </div>
+                    )}
                     <button
                       onClick={() => setShowDashboard(false)}
                       className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors flex items-center gap-2"
@@ -547,7 +566,11 @@ export default function Home() {
                       </div>
                       
                       <div className="flex gap-4 pt-8 border-t-2 border-gray-200 mt-8">
-                        <button className="flex items-center gap-2 px-8 py-4 text-white rounded-xl font-bold transition-all duration-300 hover:scale-105 shadow-lg" style={{ backgroundColor: '#B2AEA5' }}>
+                        <button 
+                          onClick={handleSaveChanges}
+                          className="flex items-center gap-2 px-8 py-4 text-white rounded-xl font-bold transition-all duration-300 hover:scale-105 shadow-lg" 
+                          style={{ backgroundColor: '#B2AEA5' }}
+                        >
                           <Save className="w-5 h-5" />
                           Salvar Alterações
                         </button>
@@ -720,7 +743,11 @@ export default function Home() {
                       </div>
                       
                       <div className="flex gap-4 pt-8 border-t-2 border-gray-200 mt-8">
-                        <button className="flex items-center gap-2 px-8 py-4 text-white rounded-xl font-bold transition-all duration-300 hover:scale-105 shadow-lg" style={{ backgroundColor: '#B2AEA5' }}>
+                        <button 
+                          onClick={handleSaveChanges}
+                          className="flex items-center gap-2 px-8 py-4 text-white rounded-xl font-bold transition-all duration-300 hover:scale-105 shadow-lg" 
+                          style={{ backgroundColor: '#B2AEA5' }}
+                        >
                           <Save className="w-5 h-5" />
                           Salvar Alterações
                         </button>
@@ -759,36 +786,54 @@ export default function Home() {
           <div className="absolute bottom-20 left-32 w-5 h-5 rounded-full animate-pulse" style={{ backgroundColor: '#B2AEA5', opacity: 0.5 }}></div>
         </div>
         <div className="max-w-7xl mx-auto relative">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full border mb-8" style={{ backgroundColor: 'rgba(255, 255, 255, 0.9)', backdropFilter: 'blur(8px)', borderColor: '#B2AEA5', boxShadow: '0 8px 32px rgba(178, 174, 165, 0.2)' }}>
-              <Shield className="w-5 h-5" style={{ color: '#333333' }} />
-              <span className="font-semibold" style={{ color: '#333333' }}>{sectionData.hero.crm}</span>
+          {/* Layout Desktop e Mobile */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            {/* Textos e Botões - à esquerda */}
+            <div className="order-2 lg:order-1 relative z-20">
+              <div className="mb-8">
+                <img 
+                  src="https://i.imgur.com/5fNGOVu.jpg" 
+                  alt="Dra. Ana Cláudia Babolim" 
+                  className="w-32 h-auto mb-6"
+                />
+              </div>
+              
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif mb-6 leading-tight font-bold" style={{ color: '#333333', textShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+                {sectionData.hero.title}
+              </h1>
+              <p className="text-lg sm:text-xl mb-8 leading-relaxed font-medium" style={{ color: '#666666' }}>
+                {sectionData.hero.subtitle}
+              </p>
+              
+              <div className="flex flex-col sm:flex-row gap-4">
+                <a 
+                  href="https://wa.me/5569992650688?text=Olá%20Dra.%20Ana%20Cláudia,%20gostaria%20de%20agendar%20uma%20consulta"
+                  className="text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 hover:scale-105 shadow-2xl flex items-center justify-center gap-2"
+                  style={{ background: 'linear-gradient(135deg, #B2AEA5 0%, #8A8680 50%, #666666 100%)', boxShadow: '0 10px 30px rgba(178, 174, 165, 0.3)' }}
+                >
+                  <Heart className="w-5 h-5" />
+                  Agendar Consulta
+                </a>
+                <button 
+                  onClick={() => scrollToSection('localizacao')}
+                  className="text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 hover:scale-105 shadow-2xl flex items-center justify-center gap-2"
+                  style={{ background: 'linear-gradient(135deg, #8A8680 0%, #B2AEA5 50%, #CCCCCC 100%)', boxShadow: '0 10px 30px rgba(138, 134, 128, 0.3)' }}
+                >
+                  <MapPin className="w-5 h-5" />
+                  Ver Localização
+                </button>
+              </div>
             </div>
             
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif mb-6 leading-tight font-bold" style={{ color: '#333333', textShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
-              {sectionData.hero.title}
-            </h1>
-            <p className="text-lg sm:text-xl mb-8 max-w-4xl mx-auto leading-relaxed font-medium" style={{ color: '#666666' }}>
-              {sectionData.hero.subtitle}
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a 
-                href="https://wa.me/5569992650688?text=Olá%20Dra.%20Ana%20Cláudia,%20gostaria%20de%20agendar%20uma%20consulta"
-                className="text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 hover:scale-105 shadow-2xl flex items-center justify-center gap-2"
-                style={{ background: 'linear-gradient(135deg, #B2AEA5 0%, #8A8680 50%, #666666 100%)', boxShadow: '0 10px 30px rgba(178, 174, 165, 0.3)' }}
-              >
-                <Heart className="w-5 h-5" />
-                Agendar Consulta
-              </a>
-              <button 
-                onClick={() => scrollToSection('localizacao')}
-                className="text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 hover:scale-105 shadow-2xl flex items-center justify-center gap-2"
-                style={{ background: 'linear-gradient(135deg, #8A8680 0%, #B2AEA5 50%, #CCCCCC 100%)', boxShadow: '0 10px 30px rgba(138, 134, 128, 0.3)' }}
-              >
-                <MapPin className="w-5 h-5" />
-                Ver Localização
-              </button>
+            {/* Foto da Doutora - à direita */}
+            <div className="order-1 lg:order-2 relative">
+              <div className="relative">
+                <img 
+                  src={sectionData.hero.image} 
+                  alt="Dra. Ana Cláudia Babolim - Neuropediatra"
+                  className="w-full h-auto rounded-3xl object-cover shadow-2xl transition-all duration-500 hover:scale-105"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -1216,8 +1261,6 @@ export default function Home() {
                       {post.category}
                     </span>
                   </div>
-                  
-
                 </div>
               </article>
             ))}
@@ -1531,11 +1574,14 @@ export default function Home() {
             </div>
             
             <div className="flex justify-center gap-6 mb-10">
-              <a href="#" className="w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-xl" style={{ background: 'linear-gradient(135deg, #F0F0F0 0%, #F5F5F5 100%)' }}>
+              <a 
+                href="https://www.instagram.com/dra.anaclaudiababolim?igsh=MXhxNjh2ZXl4eTZveQ%3D%3D&utm_source=qr" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-xl" 
+                style={{ background: 'linear-gradient(135deg, #F0F0F0 0%, #F5F5F5 100%)' }}
+              >
                 <Instagram className="w-6 h-6" style={{ color: '#333333' }} />
-              </a>
-              <a href="#" className="w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-xl" style={{ background: 'linear-gradient(135deg, #F0F0F0 0%, #F5F5F5 100%)' }}>
-                <Linkedin className="w-6 h-6" style={{ color: '#333333' }} />
               </a>
             </div>
             
