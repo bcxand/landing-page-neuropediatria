@@ -120,7 +120,7 @@ export default function Dashboard() {
 
   const [siteImages, setSiteImages] = useState<SiteImages>({
     hero: 'https://i.imgur.com/MBDOByW.jpg',
-    logo: 'https://i.imgur.com/5fNGOVu.png',
+    logo: 'https://i.imgur.com/lqWe9C3.png',
     about: 'https://i.imgur.com/K3yeK96.jpg',
     humanized: 'https://i.imgur.com/QgggT6r.jpg'
   });
@@ -129,7 +129,7 @@ export default function Dashboard() {
     heroTitle: 'Cuidando do desenvolvimento neurológico infantil',
     heroSubtitle: 'com ciência, empatia e propósito',
     heroDescription: 'Atendimento capacitado em Neuropediatria e Pediatria com foco no diagnóstico, acompanhamento e cuidado integral de crianças e adolescentes com transtornos do neurodesenvolvimento.',
-    aboutTitle: 'Sobre a Doutora',
+    aboutTitle: 'Sobre Mim',
     aboutDescription: 'Sou médica, pós-graduada em Neuropediatria e Pediatria. Tenho ampla experiência no diagnóstico e acompanhamento de crianças e adolescentes com condições neurológicas e transtornos do neurodesenvolvimento.',
     aboutSecondParagraph: 'Minha atuação é guiada pela sensibilidade, pela ciência e pelo compromisso com o bem-estar e a inclusão de cada criança e sua família.',
     humanizedTitle: 'Atendimento Humanizado',
@@ -138,7 +138,7 @@ export default function Dashboard() {
     humanizedDescription2: 'Acredito que compreender o contexto emocional, social e familiar é essencial para um diagnóstico preciso e um tratamento eficaz.',
     humanizedDescription3: 'Por isso, dedico tempo para conhecer cada pequeno paciente e oferecer um acompanhamento próximo, baseado em empatia, ciência e confiança.',
     humanizedHighlight: 'Mais do que tratar sintomas, meu propósito é promover o bem-estar e o desenvolvimento integral da criança.',
-    missionTitle: 'Nossa Missão',
+    missionTitle: 'Minha Missão',
     missionDescription: 'Minha missão é promover o pleno desenvolvimento da criança em todas as suas dimensões — cognitivas, emocionais e sociais. Acredito em um cuidado construído em conjunto com famílias, escolas e outros profissionais da saúde, sempre com base em evidências científicas e em uma escuta acolhedora.',
     qualificationTitle: 'Qualificação',
     qualificationDescription: 'Qualificada para zelar por você e por aqueles que você ama.',
@@ -162,7 +162,33 @@ export default function Dashboard() {
   const [loginData, setLoginData] = useState({ username: '', password: '' });
   const [activeSection, setActiveSection] = useState('hero');
   const [saveEffect, setSaveEffect] = useState(false);
-  const [editingVideo, setEditingVideo] = useState<string | null>(null);
+
+  // Carregar dados do localStorage quando o componente montar
+  useEffect(() => {
+    const savedData = localStorage.getItem('siteData');
+    if (savedData) {
+      try {
+        const data = JSON.parse(savedData);
+        if (data.videos) setVideos(data.videos);
+        if (data.blogPosts) setBlogPosts(data.blogPosts);
+        if (data.siteImages) setSiteImages(data.siteImages);
+        if (data.siteContent) setSiteContent(data.siteContent);
+      } catch (error) {
+        console.error('Erro ao carregar dados salvos:', error);
+      }
+    }
+  }, []);
+
+  // Salvar automaticamente no localStorage sempre que houver mudanças
+  useEffect(() => {
+    const dataToSave = {
+      videos,
+      blogPosts,
+      siteImages,
+      siteContent
+    };
+    localStorage.setItem('siteData', JSON.stringify(dataToSave));
+  }, [videos, blogPosts, siteImages, siteContent]);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -211,6 +237,40 @@ export default function Dashboard() {
 
   const removeVideo = (id: string) => {
     setVideos(videos.filter(video => video.id !== id));
+    handleSave();
+  };
+
+  const addBlogPost = () => {
+    const newPost: BlogPost = {
+      id: Date.now().toString(),
+      title: 'Novo Post',
+      category: 'Categoria',
+      content: 'Conteúdo do post...',
+      date: new Date().toLocaleDateString('pt-BR'),
+      image: ''
+    };
+    setBlogPosts([...blogPosts, newPost]);
+    handleSave();
+  };
+
+  const updateBlogPost = (id: string, field: keyof BlogPost, value: string) => {
+    setBlogPosts(blogPosts.map(post => 
+      post.id === id ? { ...post, [field]: value } : post
+    ));
+  };
+
+  const removeBlogPost = (id: string) => {
+    setBlogPosts(blogPosts.filter(post => post.id !== id));
+    handleSave();
+  };
+
+  const updateSiteImage = (key: keyof SiteImages, value: string) => {
+    setSiteImages({...siteImages, [key]: value});
+    handleSave();
+  };
+
+  const updateSiteContent = (key: keyof SiteContent, value: string) => {
+    setSiteContent({...siteContent, [key]: value});
     handleSave();
   };
 
@@ -279,7 +339,7 @@ export default function Dashboard() {
         <div className="fixed inset-0 bg-green-500/20 z-50 flex items-center justify-center pointer-events-none">
           <div className="bg-green-500 text-white px-8 py-4 rounded-lg shadow-lg flex items-center gap-3 animate-bounce">
             <CheckCircle className="w-6 h-6" />
-            <span className="font-semibold">Alterações salvas com sucesso!</span>
+            <span className="font-semibold">Alterações salvas e sincronizadas com o site!</span>
           </div>
         </div>
       )}
@@ -327,9 +387,9 @@ export default function Dashboard() {
               <nav className="space-y-2">
                 {[
                   { id: 'hero', label: 'Hero (Principal)', icon: Layout },
-                  { id: 'about', label: 'Sobre a Doutora', icon: User },
+                  { id: 'about', label: 'Sobre Mim', icon: User },
                   { id: 'humanized', label: 'Atendimento Humanizado', icon: Heart },
-                  { id: 'mission', label: 'Nossa Missão', icon: Award },
+                  { id: 'mission', label: 'Minha Missão', icon: Award },
                   { id: 'qualification', label: 'Qualificação', icon: Star },
                   { id: 'neuropediatria', label: 'Neuropediatria', icon: Brain },
                   { id: 'pediatria', label: 'Pediatria', icon: Baby },
@@ -378,7 +438,7 @@ export default function Dashboard() {
                       <input
                         type="text"
                         value={siteContent.heroTitle}
-                        onChange={(e) => setSiteContent({...siteContent, heroTitle: e.target.value})}
+                        onChange={(e) => updateSiteContent('heroTitle', e.target.value)}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#B2AEA5] focus:border-transparent"
                       />
                     </div>
@@ -387,7 +447,7 @@ export default function Dashboard() {
                       <input
                         type="text"
                         value={siteContent.heroSubtitle}
-                        onChange={(e) => setSiteContent({...siteContent, heroSubtitle: e.target.value})}
+                        onChange={(e) => updateSiteContent('heroSubtitle', e.target.value)}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#B2AEA5] focus:border-transparent"
                       />
                     </div>
@@ -395,27 +455,20 @@ export default function Dashboard() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">Descrição</label>
                       <textarea
                         value={siteContent.heroDescription}
-                        onChange={(e) => setSiteContent({...siteContent, heroDescription: e.target.value})}
+                        onChange={(e) => updateSiteContent('heroDescription', e.target.value)}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#B2AEA5] focus:border-transparent resize-none"
                         rows={4}
                       />
                     </div>
-                    <button
-                      onClick={handleSave}
-                      className="bg-gradient-to-r from-[#B2AEA5] to-[#9A9690] text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all duration-300 flex items-center gap-2"
-                    >
-                      <Save className="w-5 h-5" />
-                      Salvar Alterações
-                    </button>
                   </div>
                 </div>
               )}
 
-              {/* Seção Sobre a Doutora */}
+              {/* Seção Sobre Mim */}
               {activeSection === 'about' && (
                 <div className="space-y-8">
                   <div className="flex items-center justify-between">
-                    <h2 className="text-2xl font-bold text-gray-800">Sobre a Doutora</h2>
+                    <h2 className="text-2xl font-bold text-gray-800">Sobre Mim</h2>
                     <div className="flex items-center gap-2">
                       <User className="w-5 h-5 text-[#B2AEA5]" />
                       <span className="text-sm text-gray-600">Apresentação profissional</span>
@@ -428,7 +481,7 @@ export default function Dashboard() {
                       <input
                         type="text"
                         value={siteContent.aboutTitle}
-                        onChange={(e) => setSiteContent({...siteContent, aboutTitle: e.target.value})}
+                        onChange={(e) => updateSiteContent('aboutTitle', e.target.value)}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#B2AEA5] focus:border-transparent"
                       />
                     </div>
@@ -436,7 +489,7 @@ export default function Dashboard() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">Primeiro Parágrafo</label>
                       <textarea
                         value={siteContent.aboutDescription}
-                        onChange={(e) => setSiteContent({...siteContent, aboutDescription: e.target.value})}
+                        onChange={(e) => updateSiteContent('aboutDescription', e.target.value)}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#B2AEA5] focus:border-transparent resize-none"
                         rows={4}
                       />
@@ -445,18 +498,11 @@ export default function Dashboard() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">Segundo Parágrafo</label>
                       <textarea
                         value={siteContent.aboutSecondParagraph}
-                        onChange={(e) => setSiteContent({...siteContent, aboutSecondParagraph: e.target.value})}
+                        onChange={(e) => updateSiteContent('aboutSecondParagraph', e.target.value)}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#B2AEA5] focus:border-transparent resize-none"
                         rows={3}
                       />
                     </div>
-                    <button
-                      onClick={handleSave}
-                      className="bg-gradient-to-r from-[#B2AEA5] to-[#9A9690] text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all duration-300 flex items-center gap-2"
-                    >
-                      <Save className="w-5 h-5" />
-                      Salvar Alterações
-                    </button>
                   </div>
                 </div>
               )}
@@ -478,7 +524,7 @@ export default function Dashboard() {
                       <input
                         type="text"
                         value={siteContent.humanizedTitle}
-                        onChange={(e) => setSiteContent({...siteContent, humanizedTitle: e.target.value})}
+                        onChange={(e) => updateSiteContent('humanizedTitle', e.target.value)}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#B2AEA5] focus:border-transparent"
                       />
                     </div>
@@ -487,7 +533,7 @@ export default function Dashboard() {
                       <input
                         type="text"
                         value={siteContent.humanizedSubtitle}
-                        onChange={(e) => setSiteContent({...siteContent, humanizedSubtitle: e.target.value})}
+                        onChange={(e) => updateSiteContent('humanizedSubtitle', e.target.value)}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#B2AEA5] focus:border-transparent"
                       />
                     </div>
@@ -495,7 +541,7 @@ export default function Dashboard() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">Primeiro Parágrafo</label>
                       <textarea
                         value={siteContent.humanizedDescription1}
-                        onChange={(e) => setSiteContent({...siteContent, humanizedDescription1: e.target.value})}
+                        onChange={(e) => updateSiteContent('humanizedDescription1', e.target.value)}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#B2AEA5] focus:border-transparent resize-none"
                         rows={3}
                       />
@@ -504,7 +550,7 @@ export default function Dashboard() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">Segundo Parágrafo</label>
                       <textarea
                         value={siteContent.humanizedDescription2}
-                        onChange={(e) => setSiteContent({...siteContent, humanizedDescription2: e.target.value})}
+                        onChange={(e) => updateSiteContent('humanizedDescription2', e.target.value)}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#B2AEA5] focus:border-transparent resize-none"
                         rows={3}
                       />
@@ -513,7 +559,7 @@ export default function Dashboard() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">Terceiro Parágrafo</label>
                       <textarea
                         value={siteContent.humanizedDescription3}
-                        onChange={(e) => setSiteContent({...siteContent, humanizedDescription3: e.target.value})}
+                        onChange={(e) => updateSiteContent('humanizedDescription3', e.target.value)}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#B2AEA5] focus:border-transparent resize-none"
                         rows={3}
                       />
@@ -522,27 +568,20 @@ export default function Dashboard() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">Frase de Destaque</label>
                       <textarea
                         value={siteContent.humanizedHighlight}
-                        onChange={(e) => setSiteContent({...siteContent, humanizedHighlight: e.target.value})}
+                        onChange={(e) => updateSiteContent('humanizedHighlight', e.target.value)}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#B2AEA5] focus:border-transparent resize-none"
                         rows={2}
                       />
                     </div>
-                    <button
-                      onClick={handleSave}
-                      className="bg-gradient-to-r from-[#B2AEA5] to-[#9A9690] text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all duration-300 flex items-center gap-2"
-                    >
-                      <Save className="w-5 h-5" />
-                      Salvar Alterações
-                    </button>
                   </div>
                 </div>
               )}
 
-              {/* Seção Nossa Missão */}
+              {/* Seção Minha Missão */}
               {activeSection === 'mission' && (
                 <div className="space-y-8">
                   <div className="flex items-center justify-between">
-                    <h2 className="text-2xl font-bold text-gray-800">Nossa Missão</h2>
+                    <h2 className="text-2xl font-bold text-gray-800">Minha Missão</h2>
                     <div className="flex items-center gap-2">
                       <Award className="w-5 h-5 text-[#B2AEA5]" />
                       <span className="text-sm text-gray-600">Propósito e valores</span>
@@ -555,7 +594,7 @@ export default function Dashboard() {
                       <input
                         type="text"
                         value={siteContent.missionTitle}
-                        onChange={(e) => setSiteContent({...siteContent, missionTitle: e.target.value})}
+                        onChange={(e) => updateSiteContent('missionTitle', e.target.value)}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#B2AEA5] focus:border-transparent"
                       />
                     </div>
@@ -563,18 +602,11 @@ export default function Dashboard() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">Descrição da Missão</label>
                       <textarea
                         value={siteContent.missionDescription}
-                        onChange={(e) => setSiteContent({...siteContent, missionDescription: e.target.value})}
+                        onChange={(e) => updateSiteContent('missionDescription', e.target.value)}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#B2AEA5] focus:border-transparent resize-none"
                         rows={5}
                       />
                     </div>
-                    <button
-                      onClick={handleSave}
-                      className="bg-gradient-to-r from-[#B2AEA5] to-[#9A9690] text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all duration-300 flex items-center gap-2"
-                    >
-                      <Save className="w-5 h-5" />
-                      Salvar Alterações
-                    </button>
                   </div>
 
                   <div className="bg-gradient-to-r from-gray-50 to-white p-6 rounded-lg border-l-4 border-[#B2AEA5]">
@@ -606,7 +638,7 @@ export default function Dashboard() {
                       <input
                         type="text"
                         value={siteContent.qualificationTitle}
-                        onChange={(e) => setSiteContent({...siteContent, qualificationTitle: e.target.value})}
+                        onChange={(e) => updateSiteContent('qualificationTitle', e.target.value)}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#B2AEA5] focus:border-transparent"
                       />
                     </div>
@@ -615,17 +647,10 @@ export default function Dashboard() {
                       <input
                         type="text"
                         value={siteContent.qualificationDescription}
-                        onChange={(e) => setSiteContent({...siteContent, qualificationDescription: e.target.value})}
+                        onChange={(e) => updateSiteContent('qualificationDescription', e.target.value)}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#B2AEA5] focus:border-transparent"
                       />
                     </div>
-                    <button
-                      onClick={handleSave}
-                      className="bg-gradient-to-r from-[#B2AEA5] to-[#9A9690] text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all duration-300 flex items-center gap-2"
-                    >
-                      <Save className="w-5 h-5" />
-                      Salvar Alterações
-                    </button>
                   </div>
 
                   <div className="bg-gradient-to-r from-gray-50 to-white p-6 rounded-lg border-l-4 border-[#B2AEA5]">
@@ -654,7 +679,7 @@ export default function Dashboard() {
                       <input
                         type="text"
                         value={siteContent.neuropediatriaTitle}
-                        onChange={(e) => setSiteContent({...siteContent, neuropediatriaTitle: e.target.value})}
+                        onChange={(e) => updateSiteContent('neuropediatriaTitle', e.target.value)}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#B2AEA5] focus:border-transparent"
                       />
                     </div>
@@ -662,7 +687,7 @@ export default function Dashboard() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">Descrição da Seção</label>
                       <textarea
                         value={siteContent.neuropediatriaDescription}
-                        onChange={(e) => setSiteContent({...siteContent, neuropediatriaDescription: e.target.value})}
+                        onChange={(e) => updateSiteContent('neuropediatriaDescription', e.target.value)}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#B2AEA5] focus:border-transparent resize-none"
                         rows={4}
                       />
@@ -727,14 +752,6 @@ export default function Dashboard() {
                       </div>
                     ))}
                   </div>
-
-                  <button
-                    onClick={handleSave}
-                    className="bg-gradient-to-r from-[#B2AEA5] to-[#9A9690] text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all duration-300 flex items-center gap-2"
-                  >
-                    <Save className="w-5 h-5" />
-                    Salvar Alterações
-                  </button>
                 </div>
               )}
 
@@ -755,7 +772,7 @@ export default function Dashboard() {
                       <input
                         type="text"
                         value={siteContent.pediatriaTitle}
-                        onChange={(e) => setSiteContent({...siteContent, pediatriaTitle: e.target.value})}
+                        onChange={(e) => updateSiteContent('pediatriaTitle', e.target.value)}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#B2AEA5] focus:border-transparent"
                       />
                     </div>
@@ -763,7 +780,7 @@ export default function Dashboard() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">Descrição da Seção</label>
                       <textarea
                         value={siteContent.pediatriaDescription}
-                        onChange={(e) => setSiteContent({...siteContent, pediatriaDescription: e.target.value})}
+                        onChange={(e) => updateSiteContent('pediatriaDescription', e.target.value)}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#B2AEA5] focus:border-transparent resize-none"
                         rows={4}
                       />
@@ -828,14 +845,6 @@ export default function Dashboard() {
                       </div>
                     ))}
                   </div>
-
-                  <button
-                    onClick={handleSave}
-                    className="bg-gradient-to-r from-[#B2AEA5] to-[#9A9690] text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all duration-300 flex items-center gap-2"
-                  >
-                    <Save className="w-5 h-5" />
-                    Salvar Alterações
-                  </button>
                 </div>
               )}
 
@@ -848,18 +857,7 @@ export default function Dashboard() {
                       Editor de Blog
                     </h2>
                     <button
-                      onClick={() => {
-                        const newPost: BlogPost = {
-                          id: Date.now().toString(),
-                          title: 'Novo Post',
-                          category: 'Categoria',
-                          content: 'Conteúdo do post...',
-                          date: new Date().toLocaleDateString('pt-BR'),
-                          image: ''
-                        };
-                        setBlogPosts([...blogPosts, newPost]);
-                        handleSave();
-                      }}
+                      onClick={addBlogPost}
                       className="bg-gradient-to-r from-[#B2AEA5] to-[#9A9690] text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all duration-300 flex items-center gap-2"
                     >
                       <Plus className="w-4 h-4" />
@@ -873,7 +871,7 @@ export default function Dashboard() {
                       <input
                         type="text"
                         value={siteContent.blogTitle}
-                        onChange={(e) => setSiteContent({...siteContent, blogTitle: e.target.value})}
+                        onChange={(e) => updateSiteContent('blogTitle', e.target.value)}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#B2AEA5] focus:border-transparent"
                       />
                     </div>
@@ -881,7 +879,7 @@ export default function Dashboard() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">Descrição da Seção</label>
                       <textarea
                         value={siteContent.blogDescription}
-                        onChange={(e) => setSiteContent({...siteContent, blogDescription: e.target.value})}
+                        onChange={(e) => updateSiteContent('blogDescription', e.target.value)}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#B2AEA5] focus:border-transparent resize-none"
                         rows={3}
                       />
@@ -898,12 +896,7 @@ export default function Dashboard() {
                               <input
                                 type="text"
                                 value={post.title}
-                                onChange={(e) => {
-                                  const updatedPosts = blogPosts.map(p => 
-                                    p.id === post.id ? {...p, title: e.target.value} : p
-                                  );
-                                  setBlogPosts(updatedPosts);
-                                }}
+                                onChange={(e) => updateBlogPost(post.id, 'title', e.target.value)}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#B2AEA5] focus:border-transparent"
                               />
                             </div>
@@ -912,12 +905,7 @@ export default function Dashboard() {
                               <input
                                 type="text"
                                 value={post.category}
-                                onChange={(e) => {
-                                  const updatedPosts = blogPosts.map(p => 
-                                    p.id === post.id ? {...p, category: e.target.value} : p
-                                  );
-                                  setBlogPosts(updatedPosts);
-                                }}
+                                onChange={(e) => updateBlogPost(post.id, 'category', e.target.value)}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#B2AEA5] focus:border-transparent"
                               />
                             </div>
@@ -927,12 +915,7 @@ export default function Dashboard() {
                             <input
                               type="url"
                               value={post.image || ''}
-                              onChange={(e) => {
-                                const updatedPosts = blogPosts.map(p => 
-                                  p.id === post.id ? {...p, image: e.target.value} : p
-                                );
-                                setBlogPosts(updatedPosts);
-                              }}
+                              onChange={(e) => updateBlogPost(post.id, 'image', e.target.value)}
                               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#B2AEA5] focus:border-transparent"
                               placeholder="URL da imagem do post"
                             />
@@ -941,12 +924,7 @@ export default function Dashboard() {
                             <label className="block text-sm font-medium text-gray-700 mb-1">Conteúdo</label>
                             <textarea
                               value={post.content}
-                              onChange={(e) => {
-                                const updatedPosts = blogPosts.map(p => 
-                                  p.id === post.id ? {...p, content: e.target.value} : p
-                                );
-                                setBlogPosts(updatedPosts);
-                              }}
+                              onChange={(e) => updateBlogPost(post.id, 'content', e.target.value)}
                               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#B2AEA5] focus:border-transparent resize-none"
                               rows={6}
                             />
@@ -954,10 +932,7 @@ export default function Dashboard() {
                           <div className="flex justify-between items-center">
                             <span className="text-sm text-gray-500">Data: {post.date}</span>
                             <button
-                              onClick={() => {
-                                setBlogPosts(blogPosts.filter(p => p.id !== post.id));
-                                handleSave();
-                              }}
+                              onClick={() => removeBlogPost(post.id)}
                               className="text-red-500 hover:text-red-700 transition-colors flex items-center gap-1"
                             >
                               <Trash2 className="w-4 h-4" />
@@ -990,10 +965,10 @@ export default function Dashboard() {
                             <h3 className="text-lg font-semibold text-gray-800">
                               {key === 'hero' ? 'Imagem Principal' : 
                                key === 'logo' ? 'Logo' :
-                               key === 'about' ? 'Sobre a Doutora' :
+                               key === 'about' ? 'Sobre Mim' :
                                'Atendimento Humanizado'}
                             </h3>
-                            <p className="text-sm text-gray-600">Arraste e solte ou cole a URL da imagem</p>
+                            <p className="text-sm text-gray-600">Cole a URL da imagem</p>
                           </div>
                         </div>
                         
@@ -1001,10 +976,7 @@ export default function Dashboard() {
                           <input
                             type="url"
                             value={url}
-                            onChange={(e) => {
-                              setSiteImages({...siteImages, [key]: e.target.value});
-                              handleSave();
-                            }}
+                            onChange={(e) => updateSiteImage(key as keyof SiteImages, e.target.value)}
                             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#B2AEA5] focus:border-transparent"
                             placeholder="URL da imagem"
                           />
@@ -1054,10 +1026,10 @@ export default function Dashboard() {
                           siteContent.contactTitle
                         }
                         onChange={(e) => {
-                          if (activeSection === 'formation') setSiteContent({...siteContent, formationTitle: e.target.value});
-                          if (activeSection === 'process') setSiteContent({...siteContent, processTitle: e.target.value});
-                          if (activeSection === 'location') setSiteContent({...siteContent, locationTitle: e.target.value});
-                          if (activeSection === 'contact') setSiteContent({...siteContent, contactTitle: e.target.value});
+                          if (activeSection === 'formation') updateSiteContent('formationTitle', e.target.value);
+                          if (activeSection === 'process') updateSiteContent('processTitle', e.target.value);
+                          if (activeSection === 'location') updateSiteContent('locationTitle', e.target.value);
+                          if (activeSection === 'contact') updateSiteContent('contactTitle', e.target.value);
                         }}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#B2AEA5] focus:border-transparent"
                       />
@@ -1072,22 +1044,15 @@ export default function Dashboard() {
                           siteContent.contactDescription
                         }
                         onChange={(e) => {
-                          if (activeSection === 'formation') setSiteContent({...siteContent, formationDescription: e.target.value});
-                          if (activeSection === 'process') setSiteContent({...siteContent, processDescription: e.target.value});
-                          if (activeSection === 'location') setSiteContent({...siteContent, locationDescription: e.target.value});
-                          if (activeSection === 'contact') setSiteContent({...siteContent, contactDescription: e.target.value});
+                          if (activeSection === 'formation') updateSiteContent('formationDescription', e.target.value);
+                          if (activeSection === 'process') updateSiteContent('processDescription', e.target.value);
+                          if (activeSection === 'location') updateSiteContent('locationDescription', e.target.value);
+                          if (activeSection === 'contact') updateSiteContent('contactDescription', e.target.value);
                         }}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#B2AEA5] focus:border-transparent resize-none"
                         rows={4}
                       />
                     </div>
-                    <button
-                      onClick={handleSave}
-                      className="bg-gradient-to-r from-[#B2AEA5] to-[#9A9690] text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all duration-300 flex items-center gap-2"
-                    >
-                      <Save className="w-5 h-5" />
-                      Salvar Alterações
-                    </button>
                   </div>
                 </div>
               )}

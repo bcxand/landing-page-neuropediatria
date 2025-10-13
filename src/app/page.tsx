@@ -27,6 +27,39 @@ interface SiteImages {
   humanized: string;
 }
 
+interface SiteContent {
+  heroTitle: string;
+  heroSubtitle: string;
+  heroDescription: string;
+  aboutTitle: string;
+  aboutDescription: string;
+  aboutSecondParagraph: string;
+  humanizedTitle: string;
+  humanizedSubtitle: string;
+  humanizedDescription1: string;
+  humanizedDescription2: string;
+  humanizedDescription3: string;
+  humanizedHighlight: string;
+  missionTitle: string;
+  missionDescription: string;
+  qualificationTitle: string;
+  qualificationDescription: string;
+  neuropediatriaTitle: string;
+  neuropediatriaDescription: string;
+  pediatriaTitle: string;
+  pediatriaDescription: string;
+  blogTitle: string;
+  blogDescription: string;
+  formationTitle: string;
+  formationDescription: string;
+  processTitle: string;
+  processDescription: string;
+  locationTitle: string;
+  locationDescription: string;
+  contactTitle: string;
+  contactDescription: string;
+}
+
 export default function Home() {
   const [videos, setVideos] = useState<Video[]>([
     {
@@ -87,10 +120,59 @@ export default function Home() {
 
   const [siteImages, setSiteImages] = useState<SiteImages>({
     hero: 'https://i.imgur.com/MBDOByW.jpg',
-    logo: 'https://i.imgur.com/5fNGOVu.png',
+    logo: 'https://i.imgur.com/lqWe9C3.png',
     about: 'https://i.imgur.com/K3yeK96.jpg',
     humanized: 'https://i.imgur.com/QgggT6r.jpg'
   });
+
+  const [siteContent, setSiteContent] = useState<SiteContent>({
+    heroTitle: 'Cuidando do desenvolvimento neurológico infantil',
+    heroSubtitle: 'com ciência, empatia e propósito',
+    heroDescription: 'Atendimento capacitado em Neuropediatria e Pediatria com foco no diagnóstico, acompanhamento e cuidado integral de crianças e adolescentes com transtornos do neurodesenvolvimento.',
+    aboutTitle: 'Sobre Mim',
+    aboutDescription: 'Sou médica, pós-graduada em Neuropediatria e Pediatria. Tenho ampla experiência no diagnóstico e acompanhamento de crianças e adolescentes com condições neurológicas e transtornos do neurodesenvolvimento.',
+    aboutSecondParagraph: 'Minha atuação é guiada pela sensibilidade, pela ciência e pelo compromisso com o bem-estar e a inclusão de cada criança e sua família.',
+    humanizedTitle: 'Atendimento Humanizado',
+    humanizedSubtitle: 'Um cuidado que vai além do diagnóstico',
+    humanizedDescription1: 'Meu atendimento é pautado pela escuta ativa, pelo respeito às individualidades e pelo acolhimento da família em todo o processo.',
+    humanizedDescription2: 'Acredito que compreender o contexto emocional, social e familiar é essencial para um diagnóstico preciso e um tratamento eficaz.',
+    humanizedDescription3: 'Por isso, dedico tempo para conhecer cada pequeno paciente e oferecer um acompanhamento próximo, baseado em empatia, ciência e confiança.',
+    humanizedHighlight: 'Mais do que tratar sintomas, meu propósito é promover o bem-estar e o desenvolvimento integral da criança.',
+    missionTitle: 'Minha Missão',
+    missionDescription: 'Minha missão é promover o pleno desenvolvimento da criança em todas as suas dimensões — cognitivas, emocionais e sociais. Acredito em um cuidado construído em conjunto com famílias, escolas e outros profissionais da saúde, sempre com base em evidências científicas e em uma escuta acolhedora.',
+    qualificationTitle: 'Qualificação',
+    qualificationDescription: 'Qualificada para zelar por você e por aqueles que você ama.',
+    neuropediatriaTitle: 'Neuropediatria',
+    neuropediatriaDescription: 'Assista a conteúdos criados com carinho para orientar famílias e profissionais. Aqui você encontra informações e orientações sobre o desenvolvimento infantil, transtornos neurológicos e o papel da família no cuidado da criança.',
+    pediatriaTitle: 'Pediatria',
+    pediatriaDescription: 'Conteúdos educativos sobre cuidados gerais em pediatria, desenvolvimento infantil saudável e orientações para pais e cuidadores.',
+    blogTitle: 'Blog',
+    blogDescription: 'Conteúdos educativos sobre desenvolvimento infantil, transtornos neurológicos e orientações práticas para famílias e profissionais.',
+    formationTitle: 'Formação Profissional',
+    formationDescription: 'Conheça minha trajetória acadêmica e profissional, com cursos, seminários e especializações que me capacitam para oferecer o melhor cuidado às crianças e suas famílias.',
+    processTitle: 'Processo de Atendimento',
+    processDescription: 'Atendimento pensado para acolher e orientar cada família',
+    locationTitle: 'Localização',
+    locationDescription: 'Local de Atendimento',
+    contactTitle: 'Entre em Contato',
+    contactDescription: 'Entre em contato diretamente pelo WhatsApp para agendar sua consulta ou esclarecer dúvidas. Estou aqui para ajudar você e sua família.'
+  });
+
+  // Carregar dados do localStorage quando o componente montar
+  useEffect(() => {
+    const savedData = localStorage.getItem('siteData');
+    if (savedData) {
+      try {
+        const data = JSON.parse(savedData);
+        if (data.videos) setVideos(data.videos);
+        if (data.blogPosts) setBlogPosts(data.blogPosts);
+        if (data.siteImages) setSiteImages(data.siteImages);
+        if (data.siteContent) setSiteContent(data.siteContent);
+      } catch (error) {
+        console.error('Erro ao carregar dados salvos:', error);
+      }
+    }
+  }, []);
 
   const whatsappNumber = "5569992650688";
   const whatsappMessage = "Olá! Gostaria de agendar uma consulta com a Dra. Ana Cláudia Babolim.";
@@ -159,7 +241,7 @@ export default function Home() {
 
       {/* Hero Section */}
       <section id="hero" className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-[#B2AEA5]/5 via-white to-[#B2AEA5]/10">
-        <div className="container mx-auto px-6 lg:px-12 xl:px-20 relative z-10">
+        <div className="container mx-auto px-6 lg:px-12 xl:px-20 2xl:px-32 relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="text-center lg:text-left space-y-8">
               {/* Logo centralizada */}
@@ -169,7 +251,7 @@ export default function Home() {
                   <img 
                     src={siteImages.logo} 
                     alt="Logo Dra. Ana Cláudia Babolim" 
-                    className="relative h-24 w-auto hover:scale-105 transition-transform duration-300"
+                    className="relative h-32 w-auto hover:scale-105 transition-transform duration-300"
                   />
                 </div>
               </div>
@@ -177,13 +259,13 @@ export default function Home() {
               {/* Headline em destaque */}
               <div className="space-y-6">
                 <h1 className="text-4xl lg:text-6xl font-bold bg-gradient-to-r from-gray-900 to-[#B2AEA5] bg-clip-text text-transparent leading-tight">
-                  Cuidando do desenvolvimento neurológico infantil
+                  {siteContent.heroTitle}
                 </h1>
                 <p className="text-xl lg:text-2xl text-gray-700 font-medium">
-                  com ciência, empatia e propósito
+                  {siteContent.heroSubtitle}
                 </p>
                 <p className="text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto lg:mx-0">
-                  Atendimento capacitado em Neuropediatria e Pediatria com foco no diagnóstico, acompanhamento e cuidado integral de crianças e adolescentes com transtornos do neurodesenvolvimento.
+                  {siteContent.heroDescription}
                 </p>
               </div>
 
@@ -221,9 +303,9 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Sobre a Doutora */}
+      {/* Sobre Mim */}
       <section className="py-20 bg-gradient-to-br from-white via-[#B2AEA5]/5 to-[#B2AEA5]/10 relative">
-        <div className="container mx-auto px-6 lg:px-12 xl:px-20 relative z-10">
+        <div className="container mx-auto px-6 lg:px-12 xl:px-20 2xl:px-32 relative z-10">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="relative">
               <div className="relative group">
@@ -242,7 +324,7 @@ export default function Home() {
               <div className="space-y-4">
                 {/* Mini card para título */}
                 <div className="inline-block bg-[#B2AEA5] text-white px-6 py-3 rounded-full shadow-lg">
-                  <h2 className="text-2xl font-bold">Sobre a Doutora</h2>
+                  <h2 className="text-2xl font-bold">{siteContent.aboutTitle}</h2>
                 </div>
                 
                 <div className="bg-gradient-to-br from-white to-gray-50 p-6 rounded-2xl border-2 border-[#B2AEA5]/20 shadow-lg">
@@ -254,10 +336,10 @@ export default function Home() {
 
               <div className="space-y-6">
                 <p className="text-lg text-gray-700 leading-relaxed">
-                  Sou médica, pós-graduada em Neuropediatria e Pediatria. Tenho ampla experiência no diagnóstico e acompanhamento de crianças e adolescentes com condições neurológicas e transtornos do neurodesenvolvimento.
+                  {siteContent.aboutDescription}
                 </p>
                 <p className="text-lg text-gray-700 leading-relaxed">
-                  Minha atuação é guiada pela sensibilidade, pela ciência e pelo compromisso com o bem-estar e a inclusão de cada criança e sua família.
+                  {siteContent.aboutSecondParagraph}
                 </p>
               </div>
 
@@ -294,34 +376,34 @@ export default function Home() {
 
       {/* Atendimento Humanizado */}
       <section className="py-20 bg-gradient-to-br from-[#B2AEA5]/10 via-white to-gray-50 relative">
-        <div className="container mx-auto px-6 lg:px-12 xl:px-20 relative z-10">
+        <div className="container mx-auto px-6 lg:px-12 xl:px-20 2xl:px-32 relative z-10">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="space-y-8">
               <div className="space-y-4">
                 {/* Mini card para título */}
                 <div className="inline-block bg-[#B2AEA5] text-white px-6 py-3 rounded-full shadow-lg">
-                  <h2 className="text-2xl font-bold">Atendimento Humanizado</h2>
+                  <h2 className="text-2xl font-bold">{siteContent.humanizedTitle}</h2>
                 </div>
                 
                 <div className="bg-gradient-to-br from-gray-50 to-white p-6 rounded-2xl border-2 border-[#B2AEA5]/20 shadow-lg">
-                  <h3 className="text-2xl font-bold text-[#B2AEA5] mb-4">Um cuidado que vai além do diagnóstico</h3>
+                  <h3 className="text-2xl font-bold text-[#B2AEA5] mb-4">{siteContent.humanizedSubtitle}</h3>
                   <p className="text-lg text-gray-700 italic">Cada criança é única e merece ser cuidada dessa forma.</p>
                 </div>
               </div>
 
               <div className="space-y-6">
                 <p className="text-lg text-gray-700 leading-relaxed">
-                  Meu atendimento é pautado pela escuta ativa, pelo respeito às individualidades e pelo acolhimento da família em todo o processo.
+                  {siteContent.humanizedDescription1}
                 </p>
                 <p className="text-lg text-gray-700 leading-relaxed">
-                  Acredito que compreender o contexto emocional, social e familiar é essencial para um diagnóstico preciso e um tratamento eficaz.
+                  {siteContent.humanizedDescription2}
                 </p>
                 <p className="text-lg text-gray-700 leading-relaxed">
-                  Por isso, dedico tempo para conhecer cada pequeno paciente e oferecer um acompanhamento próximo, baseado em empatia, ciência e confiança.
+                  {siteContent.humanizedDescription3}
                 </p>
                 <div className="bg-gradient-to-r from-gray-50 to-white p-6 rounded-2xl border-l-4 border-[#B2AEA5] shadow-lg">
                   <p className="text-lg text-gray-800 font-medium">
-                    Mais do que tratar sintomas, meu propósito é promover o bem-estar e o desenvolvimento integral da criança.
+                    {siteContent.humanizedHighlight}
                   </p>
                 </div>
               </div>
@@ -354,21 +436,20 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Nossa Missão */}
+      {/* Minha Missão */}
       <section className="py-20 bg-gradient-to-br from-gray-50 via-white to-[#B2AEA5]/5 relative">
-        <div className="container mx-auto px-6 lg:px-12 xl:px-20">
+        <div className="container mx-auto px-6 lg:px-12 xl:px-20 2xl:px-32">
           <div className="text-center mb-16">
             {/* Mini card para título */}
             <div className="inline-block bg-[#B2AEA5] text-white px-6 py-3 rounded-full shadow-lg mb-6">
-              <h2 className="text-2xl font-bold">Nossa Missão</h2>
+              <h2 className="text-2xl font-bold">{siteContent.missionTitle}</h2>
             </div>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">Cuidar com excelência, empatia e trabalho em rede</p>
           </div>
 
           <div className="max-w-4xl mx-auto mb-16">
             <div className="bg-gradient-to-br from-white to-gray-50 p-8 rounded-3xl border-2 border-[#B2AEA5]/20 shadow-lg">
               <p className="text-lg text-gray-700 leading-relaxed text-center">
-                Minha missão é promover o pleno desenvolvimento da criança em todas as suas dimensões — cognitivas, emocionais e sociais. Acredito em um cuidado construído em conjunto com famílias, escolas e outros profissionais da saúde, sempre com base em evidências científicas e em uma escuta acolhedora.
+                {siteContent.missionDescription}
               </p>
             </div>
           </div>
@@ -396,13 +477,13 @@ export default function Home() {
 
       {/* Qualificação */}
       <section className="py-20 bg-gradient-to-br from-[#B2AEA5]/5 via-gray-50 to-white relative">
-        <div className="container mx-auto px-6 lg:px-12 xl:px-20">
+        <div className="container mx-auto px-6 lg:px-12 xl:px-20 2xl:px-32">
           <div className="text-center mb-16">
             {/* Mini card para título */}
             <div className="inline-block bg-[#B2AEA5] text-white px-6 py-3 rounded-full shadow-lg mb-6">
-              <h2 className="text-2xl font-bold">Qualificação</h2>
+              <h2 className="text-2xl font-bold">{siteContent.qualificationTitle}</h2>
             </div>
-            <p className="text-xl text-gray-600">Qualificada para zelar por você e por aqueles que você ama.</p>
+            <p className="text-xl text-gray-600">{siteContent.qualificationDescription}</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto">
@@ -427,17 +508,17 @@ export default function Home() {
 
       {/* Neuropediatria - Vídeos */}
       <section className="py-20 bg-gradient-to-br from-white via-[#B2AEA5]/5 to-gray-50 relative">
-        <div className="container mx-auto px-6 lg:px-12 xl:px-20">
+        <div className="container mx-auto px-6 lg:px-12 xl:px-20 2xl:px-32">
           <div className="text-center mb-16">
             {/* Mini card para título */}
             <div className="inline-block bg-[#B2AEA5] text-white px-6 py-3 rounded-full shadow-lg mb-6">
-              <h2 className="text-2xl font-bold">Neuropediatria</h2>
+              <h2 className="text-2xl font-bold">{siteContent.neuropediatriaTitle}</h2>
             </div>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Conheça mais sobre o cuidado neuropediátrico
             </p>
             <p className="text-lg text-gray-600 mt-4 max-w-4xl mx-auto">
-              Assista a conteúdos criados com carinho para orientar famílias e profissionais. Aqui você encontra informações e orientações sobre o desenvolvimento infantil, transtornos neurológicos e o papel da família no cuidado da criança.
+              {siteContent.neuropediatriaDescription}
             </p>
           </div>
 
@@ -473,17 +554,17 @@ export default function Home() {
 
       {/* Pediatria - Vídeos */}
       <section className="py-20 bg-gradient-to-br from-gray-50 via-white to-[#B2AEA5]/5 relative">
-        <div className="container mx-auto px-6 lg:px-12 xl:px-20">
+        <div className="container mx-auto px-6 lg:px-12 xl:px-20 2xl:px-32">
           <div className="text-center mb-16">
             {/* Mini card para título */}
             <div className="inline-block bg-[#B2AEA5] text-white px-6 py-3 rounded-full shadow-lg mb-6">
-              <h2 className="text-2xl font-bold">Pediatria</h2>
+              <h2 className="text-2xl font-bold">{siteContent.pediatriaTitle}</h2>
             </div>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Cuidados pediátricos essenciais
             </p>
             <p className="text-lg text-gray-600 mt-4 max-w-4xl mx-auto">
-              Conteúdos educativos sobre cuidados gerais em pediatria, desenvolvimento infantil saudável e orientações para pais e cuidadores.
+              {siteContent.pediatriaDescription}
             </p>
           </div>
 
@@ -519,17 +600,17 @@ export default function Home() {
 
       {/* Blog - Seção Normal */}
       <section className="py-20 bg-gradient-to-br from-[#B2AEA5]/5 via-gray-50 to-white relative">
-        <div className="container mx-auto px-6 lg:px-12 xl:px-20">
+        <div className="container mx-auto px-6 lg:px-12 xl:px-20 2xl:px-32">
           <div className="text-center mb-16">
             {/* Mini card para título */}
             <div className="inline-block bg-[#B2AEA5] text-white px-6 py-3 rounded-full shadow-lg mb-6">
-              <h2 className="text-2xl font-bold">Blog</h2>
+              <h2 className="text-2xl font-bold">{siteContent.blogTitle}</h2>
             </div>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Artigos e Orientações Especializadas
             </p>
             <p className="text-lg text-gray-600 mt-4 max-w-4xl mx-auto">
-              Conteúdos educativos sobre desenvolvimento infantil, transtornos neurológicos e orientações práticas para famílias e profissionais.
+              {siteContent.blogDescription}
             </p>
           </div>
 
@@ -598,17 +679,17 @@ export default function Home() {
 
       {/* Formação Profissional */}
       <section className="py-20 bg-gradient-to-br from-white via-gray-50 to-[#B2AEA5]/5 relative">
-        <div className="container mx-auto px-6 lg:px-12 xl:px-20">
+        <div className="container mx-auto px-6 lg:px-12 xl:px-20 2xl:px-32">
           <div className="text-center mb-16">
             {/* Mini card para título */}
             <div className="inline-block bg-[#B2AEA5] text-white px-6 py-3 rounded-full shadow-lg mb-6">
-              <h2 className="text-2xl font-bold">Formação Profissional</h2>
+              <h2 className="text-2xl font-bold">{siteContent.formationTitle}</h2>
             </div>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Minha Profissionalização
             </p>
             <p className="text-lg text-gray-600 mt-4 max-w-4xl mx-auto">
-              Conheça minha trajetória acadêmica e profissional, com cursos, seminários e especializações que me capacitam para oferecer o melhor cuidado às crianças e suas famílias.
+              {siteContent.formationDescription}
             </p>
           </div>
 
@@ -688,13 +769,13 @@ export default function Home() {
 
       {/* Processo de Atendimento */}
       <section className="py-20 bg-gradient-to-br from-[#B2AEA5]/5 via-gray-50 to-white relative">
-        <div className="container mx-auto px-6 lg:px-12 xl:px-20">
+        <div className="container mx-auto px-6 lg:px-12 xl:px-20 2xl:px-32">
           <div className="text-center mb-16">
             {/* Mini card para título */}
             <div className="inline-block bg-[#B2AEA5] text-white px-6 py-3 rounded-full shadow-lg mb-6">
-              <h2 className="text-2xl font-bold">Processo de Atendimento</h2>
+              <h2 className="text-2xl font-bold">{siteContent.processTitle}</h2>
             </div>
-            <p className="text-xl text-gray-600">Atendimento pensado para acolher e orientar cada família</p>
+            <p className="text-xl text-gray-600">{siteContent.processDescription}</p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
@@ -737,13 +818,13 @@ export default function Home() {
 
       {/* Localização com Mapa Correto */}
       <section id="localizacao" className="py-20 bg-gradient-to-br from-white via-[#B2AEA5]/5 to-gray-50 relative">
-        <div className="container mx-auto px-6 lg:px-12 xl:px-20">
+        <div className="container mx-auto px-6 lg:px-12 xl:px-20 2xl:px-32">
           <div className="text-center mb-16">
             {/* Mini card para título */}
             <div className="inline-block bg-[#B2AEA5] text-white px-6 py-3 rounded-full shadow-lg mb-6">
-              <h2 className="text-2xl font-bold">Localização</h2>
+              <h2 className="text-2xl font-bold">{siteContent.locationTitle}</h2>
             </div>
-            <p className="text-xl text-gray-600">Local de Atendimento</p>
+            <p className="text-xl text-gray-600">{siteContent.locationDescription}</p>
           </div>
 
           <div className="max-w-6xl mx-auto">
@@ -816,17 +897,17 @@ export default function Home() {
 
       {/* Contato */}
       <section className="py-20 bg-gradient-to-br from-gray-50 via-[#B2AEA5]/10 to-white relative">
-        <div className="container mx-auto px-6 lg:px-12 xl:px-20">
+        <div className="container mx-auto px-6 lg:px-12 xl:px-20 2xl:px-32">
           <div className="text-center mb-16">
             {/* Mini card para título */}
             <div className="inline-block bg-[#B2AEA5] text-white px-6 py-3 rounded-full shadow-lg mb-6">
-              <h2 className="text-2xl font-bold">Entre em Contato</h2>
+              <h2 className="text-2xl font-bold">{siteContent.contactTitle}</h2>
             </div>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Pronto para cuidar do seu filho?
             </p>
             <p className="text-lg text-gray-600 mt-4 max-w-4xl mx-auto">
-              Entre em contato diretamente pelo WhatsApp para agendar sua consulta ou esclarecer dúvidas. Estou aqui para ajudar você e sua família.
+              {siteContent.contactDescription}
             </p>
           </div>
 
@@ -868,7 +949,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="bg-gradient-to-br from-[#B2AEA5] to-[#9A9690] text-white py-16 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-[#B2AEA5]/20 to-transparent"></div>
-        <div className="container mx-auto px-6 lg:px-12 xl:px-20 relative z-10">
+        <div className="container mx-auto px-6 lg:px-12 xl:px-20 2xl:px-32 relative z-10">
           <div className="grid lg:grid-cols-3 gap-12 items-start">
             <div className="text-center lg:text-left">
               <div className="relative group mb-6">
