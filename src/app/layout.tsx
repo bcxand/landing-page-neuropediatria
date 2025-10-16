@@ -17,15 +17,15 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "criado com a lasy ai",
-  description: "Projeto criado com Lasy AI",
+  title: "Clínica Dra. Ana Cláudia Babolim - Excelência em Saúde",
+  description: "Clínica médica especializada em cuidados de saúde com excelência e dedicação. Dra. Ana Cláudia Babolim oferece atendimento personalizado e de qualidade.",
   openGraph: {
-    title: "criado com a lasy ai",
-    description: "Projeto criado com Lasy AI",
+    title: "Clínica Dra. Ana Cláudia Babolim - Excelência em Saúde",
+    description: "Clínica médica especializada em cuidados de saúde com excelência e dedicação. Dra. Ana Cláudia Babolim oferece atendimento personalizado e de qualidade.",
   },
   twitter: {
-    title: "criado com a lasy ai",
-    description: "Projeto criado com Lasy AI",
+    title: "Clínica Dra. Ana Cláudia Babolim - Excelência em Saúde",
+    description: "Clínica médica especializada em cuidados de saúde com excelência e dedicação. Dra. Ana Cláudia Babolim oferece atendimento personalizado e de qualidade.",
   },
 };
 
