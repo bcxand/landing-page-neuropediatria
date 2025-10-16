@@ -702,7 +702,7 @@ export default function Home() {
                 </div>
                 <h3 className="text-2xl font-bold text-gray-800">Pós-Graduações</h3>
               </div>
-              <div className="grid md:grid-cols-2 gap-6">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div className="bg-gradient-to-br from-gray-50 to-white p-6 rounded-2xl border-2 border-[#B2AEA5]/20">
                   <h4 className="text-xl font-bold text-[#B2AEA5] mb-2">Neuropediatria</h4>
                   <p className="text-gray-600">Especialização em transtornos neurológicos infantis</p>
@@ -710,6 +710,38 @@ export default function Home() {
                 <div className="bg-gradient-to-br from-gray-50 to-white p-6 rounded-2xl border-2 border-[#B2AEA5]/20">
                   <h4 className="text-xl font-bold text-[#B2AEA5] mb-2">Pediatria</h4>
                   <p className="text-gray-600">Cuidados gerais da saúde infantil</p>
+                </div>
+                <div className="bg-gradient-to-br from-gray-50 to-white p-6 rounded-2xl border-2 border-[#B2AEA5]/20">
+                  <h4 className="text-xl font-bold text-[#B2AEA5] mb-2">Psiquiatria</h4>
+                  <p className="text-gray-600">Especialização em saúde mental</p>
+                </div>
+                <div className="bg-gradient-to-br from-gray-50 to-white p-6 rounded-2xl border-2 border-[#B2AEA5]/20">
+                  <h4 className="text-xl font-bold text-[#B2AEA5] mb-2">Autismo e TDAH</h4>
+                  <p className="text-gray-600">Especialização em transtornos do neurodesenvolvimento</p>
+                </div>
+                <div className="bg-gradient-to-br from-gray-50 to-white p-6 rounded-2xl border-2 border-[#B2AEA5]/20">
+                  <h4 className="text-xl font-bold text-[#B2AEA5] mb-2">Urgência e Emergência</h4>
+                  <p className="text-gray-600">Atendimento em situações críticas</p>
+                </div>
+                <div className="bg-gradient-to-br from-gray-50 to-white p-6 rounded-2xl border-2 border-[#B2AEA5]/20">
+                  <h4 className="text-xl font-bold text-[#B2AEA5] mb-2">UTI</h4>
+                  <p className="text-gray-600">Cuidados intensivos especializados</p>
+                </div>
+                <div className="bg-gradient-to-br from-gray-50 to-white p-6 rounded-2xl border-2 border-[#B2AEA5]/20">
+                  <h4 className="text-xl font-bold text-[#B2AEA5] mb-2">Nefrologia</h4>
+                  <p className="text-gray-600">Especialização em doenças renais</p>
+                </div>
+                <div className="bg-gradient-to-br from-gray-50 to-white p-6 rounded-2xl border-2 border-[#B2AEA5]/20">
+                  <h4 className="text-xl font-bold text-[#B2AEA5] mb-2">Dermatologia</h4>
+                  <p className="text-gray-600">Cuidados especializados da pele</p>
+                </div>
+                <div className="bg-gradient-to-br from-gray-50 to-white p-6 rounded-2xl border-2 border-[#B2AEA5]/20">
+                  <h4 className="text-xl font-bold text-[#B2AEA5] mb-2">Ultrassonografia</h4>
+                  <p className="text-gray-600">Diagnóstico por imagem especializado</p>
+                </div>
+                <div className="bg-gradient-to-br from-gray-50 to-white p-6 rounded-2xl border-2 border-[#B2AEA5]/20">
+                  <h4 className="text-xl font-bold text-[#B2AEA5] mb-2">Medicina Legal</h4>
+                  <p className="text-gray-600">Perícia médica e medicina forense</p>
                 </div>
               </div>
             </div>
@@ -957,7 +989,7 @@ export default function Home() {
                 <img 
                   src={siteImages.logo} 
                   alt="Logo Dra. Ana Cláudia Babolim" 
-                  className="relative h-16 w-auto mx-auto lg:mx-0 hover:scale-105 transition-transform duration-300"
+                  className="relative h-24 w-auto mx-auto lg:mx-0 hover:scale-105 transition-transform duration-300"
                 />
               </div>
               <h3 className="text-2xl font-bold mb-2">Dra. Ana Cláudia Babolim</h3>
