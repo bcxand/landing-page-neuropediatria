@@ -17,8 +17,16 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Criado com a Lasy",
+  title: "criado com a lasy ai",
   description: "Projeto criado com Lasy AI",
+  openGraph: {
+    title: "criado com a lasy ai",
+    description: "Projeto criado com Lasy AI",
+  },
+  twitter: {
+    title: "criado com a lasy ai",
+    description: "Projeto criado com Lasy AI",
+  },
 };
 
 export default function RootLayout({
